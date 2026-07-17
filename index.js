@@ -45,6 +45,6 @@ if (!match || match[0] !== expectedExportLine) {
 
 export { latestModule };
 
-export const { getAllFilesContent, getTableNames, hello } = latestModule;
+export const { getAllFilesContent, getTableNames } = latestModule;
 
 

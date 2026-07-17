@@ -31,9 +31,4 @@ const getTableNames = ({ rootPath }) => {
     });
 };
 
-
-const hello = () => {
-    console.log("hello from bin v3");
-};
-
-export { getAllFilesContent, getTableNames, hello };
+export { getAllFilesContent, getTableNames };
