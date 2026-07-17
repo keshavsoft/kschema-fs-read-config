@@ -12,6 +12,10 @@
   "dependencies": {
     "dotenv": "^17.4.2"
   },
+  "scripts": {
+    "sync": "node bin/core/syncExports.js",
+    "prepublishOnly": "npm run sync"
+  },
   "type": "module",
   "exports": {
     ".": "./index.js"

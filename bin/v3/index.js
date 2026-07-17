@@ -23,10 +23,17 @@ const getTableNames = ({ rootPath }) => {
     const schemaPath = path.join(rootPath, process.env.SchemaPath);
     const allJsonData = readAllJsonFilesSync(schemaPath);
 
-    return allJsonData;
-    allJsonData.forEach((schema) => {
-        console.log(schema.fileName, schema.content);
+    return allJsonData.map(element => {
+        return {
+            name: element.fileName,
+            tableName: element.content.tableName
+        };
     });
 };
 
-export { getAllFilesContent };
+
+const hello = () => {
+    console.log("hello from bin v3");
+};
+
+export { getAllFilesContent, getTableNames, hello };
