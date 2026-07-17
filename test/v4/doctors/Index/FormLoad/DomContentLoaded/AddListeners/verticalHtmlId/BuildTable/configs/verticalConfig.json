@@ -1,0 +1,253 @@
+{
+    "containerId": "kSHeadContainer",
+    "tableName": "Quotations",
+    "mode": "create",
+    "layout": {
+        "verticalPosition": "top",
+        "type": "table"
+    },
+    "options": {
+        "firstRow": {
+            "showSearch": false
+        },
+        "enabledSections": [
+            "vertical",
+            "table",
+            "footer"
+        ],
+        "table": {
+            "showFooterRows": true,
+            "showDataList": true,
+            "showSave": true,
+            "showActions": true,
+            "showSerial": true,
+            "showFooter": true,
+            "footer": {
+                "showAggregateRows": true,
+                "showTotals": true
+            },
+            "body": {
+                "showEdit": true,
+                "showDelete": false,
+                "showShow": true,
+                "deleteType": "icon",
+                "deleteIconSize": "xl"
+            }
+        },
+        "vertical": {
+            "isCreate": true,
+            "isEdit": false,
+            "layoutType1": "inputsStacked",
+            "layoutType2": "singleLine",
+            "layoutType3": "labelAbove",
+            "layoutType4": "twoLines",
+            "layoutType": "twoLines",
+            "showButtons": true
+        }
+    },
+    "callbacks": {
+        "table": {
+            "onDelete1": "function",
+            "onReadFail": "function",
+            "body": {
+                "update": "function",
+                "show": "function",
+                "edit": "function"
+            },
+            "footer": {
+                "onSave": "function"
+            }
+        },
+        "vertical": {
+            "onSuccess": "function"
+        }
+    },
+    "endPoints": {
+        "create": "/api/v1/doctors/insertWithMeta",
+        "update": "/api/v1/doctors/modify",
+        "delete": "/api/v1/doctors/del",
+        "read": "",
+        "find": "",
+        "filter": "",
+        "dataLists": {},
+        "dataListEndpoints": {}
+    },
+    "columnsConfig1": [
+        {
+            "columnName": "doctorName",
+            "title": "doctorName",
+            "field": "doctorName",
+            "cellConfig": {
+                "width": "200px"
+            },
+            "tableFooterDataListShow": false,
+            "uiClasses": {
+                "form": {
+                    "rowClass": "flex items-center space-x-4"
+                }
+            },
+            "allowOnChange": false,
+            "onChangeType": "",
+            "isConsider": true,
+            "tableConfig": {
+                "footerConfig": {
+                    "enterAsTab": true,
+                    "isNotEmpty": true
+                }
+            },
+            "verticalConfig": {
+                "enterAsTab": true,
+                "allowOnChange": true,
+                "onKeyDown": true,
+                "onKeyDownType": "onDataListChange",
+                "type": "",
+                "tabIndex": "-1"
+            }
+        },
+        {
+            "columnName": "doctorMobile",
+            "field": "doctorMobile",
+            "title": "doctorMobile",
+            "primary": true,
+            "isVisible": true,
+            "isConsider": true,
+            "cellConfig": {
+                "width": "200px"
+            },
+            "verticalConfig": {
+                "enterAsTab": true,
+                "allowOnChange": true,
+                "onKeyDown": true,
+                "onKeyDownType": "onDataListChange",
+                "type": "",
+                "tabIndex": "-1"
+            },
+            "uiClasses": {
+                "form": {
+                    "rowClass": "flex items-center space-x-4"
+                }
+            }
+        },
+        {
+            "columnName": "doctorSpeciality",
+            "field": "doctorSpeciality",
+            "title": "doctorSpeciality",
+            "primary": true,
+            "isVisible": true,
+            "cellConfig": {
+                "width": "200px"
+            },
+            "verticalConfig": {
+                "enterAsTab": true,
+                "allowOnChange": true,
+                "onKeyDown": true,
+                "onKeyDownType": "onDataListChange",
+                "type": "",
+                "tabIndex": "-1"
+            },
+            "isConsider": true,
+            "uiClasses": {
+                "form": {
+                    "rowClass": "flex items-center space-x-4"
+                }
+            }
+        },
+        {
+            "field": "pk",
+            "title": "pk",
+            "primary": true,
+            "isVisible": false,
+            "cellConfig": {
+                "width": "50px"
+            }
+        }
+    ],
+    "columnsConfig": [
+        {
+            "columnName": "doctorName",
+            "title": "doctorName",
+            "field": "doctorName",
+            "cellConfig": {
+                "width": "200px"
+            },
+            "tableFooterDataListShow": false,
+            "uiClasses": {
+                "form": {
+                    "rowClass1": "flex items-center space-x-4",
+                    "rowClass2": "grid grid-cols-[180px_1fr] items-center gap-4"
+                }
+            },
+            "allowOnChange": false,
+            "onChangeType": "",
+            "isConsider": true,
+            "verticalConfig": {
+                "enterAsTab": true,
+                "allowOnChange": true,
+                "onKeyDown": true,
+                "onKeyDownType": "onDataListChange",
+                "type": "",
+                "tabIndex": "-1"
+            }
+        },
+        {
+            "columnName": "doctorMobile",
+            "field": "doctorMobile",
+            "title": "doctorMobile",
+            "primary": true,
+            "isVisible": true,
+            "isConsider": true,
+            "cellConfig": {
+                "width": "200px"
+            },
+            "verticalConfig": {
+                "enterAsTab": true,
+                "allowOnChange": true,
+                "onKeyDown": true,
+                "onKeyDownType": "onDataListChange",
+                "type": "",
+                "tabIndex": "-1"
+            },
+            "uiClasses": {
+                "form": {
+                    "rowClass1": "flex items-center space-x-4"
+                }
+            }
+        },
+        {
+            "columnName": "doctorSpeciality",
+            "field": "doctorSpeciality",
+            "title": "doctorSpeciality",
+            "primary": true,
+            "isVisible": true,
+            "cellConfig": {
+                "width": "200px"
+            },
+            "verticalConfig": {
+                "enterAsTab": true,
+                "allowOnChange": true,
+                "onKeyDown": true,
+                "onKeyDownType": "onDataListChange",
+                "type": "",
+                "tabIndex": "-1"
+            },
+            "isConsider": true,
+            "uiClasses": {
+                "form": {
+                    "rowClass1": "flex items-center space-x-4"
+                }
+            }
+        },
+        {
+            "field": "pk",
+            "title": "pk",
+            "primary": true,
+            "isVisible": false,
+            "cellConfig": {
+                "width": "50px"
+            }
+        }
+    ],
+    "defaults": {
+        "data": []
+    }
+}

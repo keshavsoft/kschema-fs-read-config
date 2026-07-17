@@ -1,0 +1,153 @@
+{
+    "containerId": "kSHeadContainer",
+    "tableName": "Quotations",
+    "mode": "create",
+    "layout": {
+        "verticalPosition": "top",
+        "type": "table"
+    },
+    "options": {
+        "firstRow": {
+            "showSearch": false
+        },
+        "enabledSections": [
+            "vertical",
+            "table",
+            "footer"
+        ],
+        "table": {
+            "showFooterRows": true,
+            "showDataList": true,
+            "showSave": true,
+            "showActions": true,
+            "showSerial": true,
+            "showFooter": true,
+            "footer": {
+                "showAggregateRows": true,
+                "showTotals": true
+            },
+            "body": {
+                "showEdit": true,
+                "showDelete": false,
+                "showShow": true,
+                "deleteType": "icon",
+                "deleteIconSize": "xl"
+            }
+        }
+    },
+    "callbacks": {
+        "table": {
+            "onDelete1": "function",
+            "onReadFail": "function",
+            "body": {
+                "update": "function",
+                "show": "function",
+                "edit": "function"
+            },
+            "footer": {
+                "onSave": "function"
+            }
+        }
+    },
+    "endPoints": {
+        "create": "/Api/v5/BillsTable/insertWithMeta",
+        "update": "",
+        "delete": "/Api/v5/BillsTable/del",
+        "read": "/Api/V5/BillsTable/ShowAll",
+        "read1": "/Api/V1/ItemsTable/ShowAll",
+        "find": "",
+        "filter": "",
+        "dataLists": {},
+        "dataListEndpoints": {}
+    },
+    "columnsConfig": [
+        {
+            "columnName": "doctorName",
+            "title": "doctorName",
+            "field": "doctorName",
+            "cellConfig": {
+                "width": "200px"
+            },
+            "dataListSource": "",
+            "tableFooterDataListShow": false,
+            "uiClasses": {
+                "form": {
+                    "rowClass": "flex items-center space-x-4"
+                }
+            },
+            "allowOnChange": false,
+            "onChangeType": "",
+            "isConsider": true,
+            "tableConfig": {
+                "footerConfig": {
+                    "enterAsTab": true,
+                    "isNotEmpty": true
+                }
+            }
+        },
+        {
+            "columnName": "doctorMobile",
+            "field": "doctorMobile",
+            "title": "doctorMobile",
+            "primary": true,
+            "isVisible": true,
+            "cellConfig": {
+                "width": "200px"
+            }
+        },
+        {
+            "columnName": "doctorSpeciality",
+            "field": "doctorSpeciality",
+            "title": "doctorSpeciality",
+            "primary": true,
+            "isVisible": true,
+            "cellConfig": {
+                "width": "200px"
+            }
+        },
+        {
+            "field": "pk",
+            "title": "pk",
+            "primary": true,
+            "isVisible": false,
+            "cellConfig": {
+                "width": "50px"
+            }
+        }
+    ],
+    "columnsConfig1": [
+        {
+            "columnName": "doctorName",
+            "title": "doctorName",
+            "cellConfig": {
+                "width": "150px"
+            },
+            "isSearchable": false,
+            "dataListSource": ""
+        },
+        {
+            "columnName": "doctorMobile",
+            "title": "doctorMobile",
+            "cellConfig": {
+                "width": "100px"
+            },
+            "isSearchable": false,
+            "dataListSource": "AccountNames.AccountName"
+        },
+        {
+            "columnName": "doctorSpeciality",
+            "title": "doctorSpeciality",
+            "cellConfig": {
+                "width": "100px"
+            }
+        },
+        {
+            "field": "pk",
+            "title": "pk",
+            "primary": true
+        }
+    ],
+    "defaults": {
+        "data": []
+    }
+}

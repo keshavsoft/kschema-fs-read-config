@@ -1,0 +1,6 @@
+POST http://localhost:2232D:/KeshavSoftRepos/2026-07-17(1)/kschema-fs-api-gen-rest/test/v5/post
+Content-Type: application/json
+
+{
+  "AccountName": "KeshavSoft"
+}

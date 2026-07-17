@@ -1,0 +1,310 @@
+{
+    "containerId": "kSTableContainer",
+    "tableName": "",
+    "mode": "create",
+    "layout": {
+        "verticalPosition": "top",
+        "type": "table"
+    },
+    "options": {
+        "enabledSections": [
+            "vertical",
+            "table",
+            "footer"
+        ],
+        "table": {
+            "showFooterRows": true,
+            "showDataList": true,
+            "showSave": true,
+            "showActions": true,
+            "showSerial": true,
+            "showFooter": true,
+            "footer": {
+                "showAggregateRows": true,
+                "createNewRow": true,
+                "showBalance": false,
+                "showTotals": true
+            },
+            "body": {
+                "showEdit": true,
+                "showDelete": true,
+                "showShow": false,
+                "deleteType": "icon",
+                "deleteIconSize": "xl"
+            }
+        }
+    },
+    "callbacks": {
+        "table": {
+            "onDelete1": "function",
+            "onReadFail": "function",
+            "body": {
+                "update": "function"
+            }
+        }
+    },
+    "endPoints": {
+        "create": "/Api/v5/ItemsTable/insertWithMeta",
+        "update": "/api/v5/ItemsTable/modify",
+        "delete": "/api/v6/ItemsTable/del",
+        "read": "/Api/V1/ItemsTable/findParentPk/<ParentPk>",
+        "read1": "/Api/V1/ItemsTable/ShowAll",
+        "find": "",
+        "filter": "",
+        "dataLists": {},
+        "dataListEndpoints": {
+            "StockItems": "/api/v6/StockItems/showAll"
+        }
+    },
+    "columnsConfig": [
+        {
+            "columnName": "ItemName",
+            "title": "ItemName",
+            "field": "ItemName",
+            "cellConfig": {
+                "width": "200px"
+            },
+            "isConsider": true,
+            "verticalConfig": {},
+            "tableConfig": {
+                "footerConfig": {
+                    "enterAsTab": true,
+                    "isNotEmpty": true
+                }
+            },
+            "isVisible": true,
+            "tableFooterDataListShow": true,
+            "dataListSource": "StockItems.StockItemName",
+            "allowOnChange": true,
+            "onChangeType": "onDataListChange"
+        },
+        {
+            "columnName": "Qty",
+            "title": "Qty",
+            "field": "Qty",
+            "cellConfig": {
+                "width": "60px",
+                "rightAlign": true,
+                "uiClasses": {
+                    "table": {
+                        "tfoot": {
+                            "inputClass": "w-full border rounded px-1 py-1 text-base",
+                            "tdClass": "px-1 py-1 border"
+                        }
+                    }
+                },
+                "tableFooter": {
+                    "showTotal": true
+                },
+                "isQuantity": true,
+                "showThousandsSeperator": true
+            },
+            "isConsider": true,
+            "verticalConfig": {
+                "allowOnChange": true,
+                "onKeyDown": true,
+                "onKeyDownType": "Qty",
+                "type": "number"
+            },
+            "tableConfig": {
+                "footerConfig": {
+                    "allowOnChange": true,
+                    "onKeyDown": true,
+                    "onKeyDownType": "Qty",
+                    "type": "number",
+                    "enterAsTab": true
+                }
+            },
+            "isVisible": true,
+            "tableFooterDataListShow": true,
+            "allowOnChange": true,
+            "onKeyDown": true,
+            "onKeyDownType": "Qty",
+            "type": "number"
+        },
+        {
+            "columnName": "OrigRate",
+            "title": "OrigRate",
+            "field": "OrigRate",
+            "cellConfig": {
+                "width": "75px",
+                "rightAlign": true,
+                "uiClasses": {
+                    "table": {
+                        "tfoot": {
+                            "inputClass": "w-full border rounded px-1 py-1 text-base",
+                            "tdClass": "px-1 py-1 border"
+                        }
+                    }
+                },
+                "showThousandsSeperator": true
+            },
+            "isConsider": true,
+            "verticalConfig": {
+                "allowOnChange": true,
+                "onKeyDown": true,
+                "onKeyDownType": "OrigRate",
+                "type": "number"
+            },
+            "tableConfig": {
+                "footerConfig": {
+                    "allowOnChange": true,
+                    "onKeyDown": true,
+                    "onKeyDownType": "OrigRate",
+                    "type": "number",
+                    "enterAsTab": true,
+                    "evalformula": "OrigRate * Qty",
+                    "evalToControl": "OrigAmount"
+                }
+            },
+            "isVisible": true,
+            "tableFooterDataListShow": true,
+            "type": "number",
+            "dataListFillName": "OrigRate"
+        },
+        {
+            "columnName": "OrigAmount",
+            "title": "OrigAmount",
+            "field": "OrigAmount",
+            "cellConfig": {
+                "width": "75px",
+                "rightAlign": true,
+                "uiClasses": {
+                    "table": {
+                        "tfoot": {
+                            "inputClass": "w-full border rounded px-1 py-1 text-base",
+                            "tdClass": "px-1 py-1 border"
+                        }
+                    }
+                },
+                "tableFooter": {
+                    "showTotal": true
+                },
+                "showThousandsSeperator": true
+            },
+            "isConsider": true,
+            "verticalConfig": {
+                "allowOnChange": true,
+                "onKeyDown": true,
+                "onKeyDownType": "OrigAmount",
+                "type": "number",
+                "inputClass": "flex-1 border rounded px-3 py-2 text-right text-xl"
+            },
+            "tableConfig": {
+                "footerConfig": {
+                    "allowOnChange": true,
+                    "onKeyDown": true,
+                    "onKeyDownType": "OrigAmount",
+                    "type": "number",
+                    "enterAsTab": true,
+                    "evalformula": "OrigAmount / Qty",
+                    "evalToControl": "OrigRate"
+                }
+            },
+            "isVisible": true,
+            "tableFooterDataListShow": true,
+            "type": "number"
+        },
+        {
+            "columnName": "RateInc",
+            "title": "RateInc",
+            "field": "RateInc",
+            "cellConfig": {
+                "width": "75px",
+                "rightAlign": true,
+                "uiClasses": {
+                    "table": {
+                        "tfoot": {
+                            "inputClass": "w-full border rounded px-1 py-1 text-base",
+                            "tdClass": "px-1 py-1 border"
+                        }
+                    }
+                },
+                "showThousandsSeperator": true
+            },
+            "isConsider": true,
+            "verticalConfig": {
+                "allowOnChange": true,
+                "onKeyDown": true,
+                "onKeyDownType": "RateInc",
+                "type": "number"
+            },
+            "tableConfig": {
+                "footerConfig": {
+                    "allowOnChange": true,
+                    "onKeyDown": true,
+                    "onKeyDownType": "RateInc",
+                    "type": "number",
+                    "enterAsTab": true,
+                    "evalformula": "RateInc * Qty",
+                    "evalToControl": "Amount"
+                }
+            },
+            "isVisible": true,
+            "tableFooterDataListShow": true,
+            "type": "number",
+            "dataListFillName": "RateInc"
+        },
+        {
+            "columnName": "Amount",
+            "title": "Amount",
+            "field": "Amount",
+            "cellConfig": {
+                "width": "75px",
+                "rightAlign": true,
+                "uiClasses": {
+                    "table": {
+                        "tfoot": {
+                            "inputClass": "w-full border rounded px-1 py-1 text-base",
+                            "tdClass": "px-1 py-1 border"
+                        }
+                    }
+                },
+                "tableFooter": {
+                    "showTotal": true
+                },
+                "showThousandsSeperator": true
+            },
+            "isConsider": true,
+            "verticalConfig": {
+                "allowOnChange": true,
+                "onKeyDown": true,
+                "onKeyDownType": "Amount",
+                "type": "number",
+                "inputClass": "w-56 border rounded px-3 py-2 text-right text-2xl",
+                "labelClass": "w-24 text-2xl font-medium",
+                "rowClass": "flex items-center justify-between"
+            },
+            "tableConfig": {
+                "footerConfig": {
+                    "allowOnChange": true,
+                    "onKeyDown": true,
+                    "onKeyDownType": "Amount",
+                    "type": "number",
+                    "enterAsTab": true,
+                    "evalformula": "Amount / Qty",
+                    "evalToControl": "RateInc"
+                }
+            },
+            "isVisible": true,
+            "tableFooterDataListShow": true,
+            "allowOnChange": true,
+            "onKeyDown": true,
+            "onKeyDownType": "Amount",
+            "type": "number"
+        },
+        {
+            "field": "pk",
+            "title": "pk",
+            "primary": true,
+            "isVisible": false
+        },
+        {
+            "field": "ParentPk",
+            "title": "ParentPk",
+            "columnName": "ParentPk",
+            "isVisible": false,
+            "defaultValue": 16
+        }
+    ]
+}

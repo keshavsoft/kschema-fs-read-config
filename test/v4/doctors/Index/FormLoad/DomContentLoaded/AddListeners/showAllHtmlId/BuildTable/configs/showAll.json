@@ -1,0 +1,6 @@
+{
+    "containerId": "kSHeadContainer",
+    "tableName": "Quotations",
+    "mode": "create",
+    "columnsConfig": []
+}

@@ -1,0 +1,153 @@
+{
+    "containerId": "kSHeadContainer",
+    "tableName": "crud",
+    "mode": "create",
+    "layout": {
+        "verticalPosition": "top",
+        "type": "table"
+    },
+    "options": {
+        "firstRow": {
+            "showSearch": false
+        },
+        "enabledSections": [
+            "vertical",
+            "table",
+            "footer"
+        ],
+        "table": {
+            "showFooterRows": true,
+            "showDataList": true,
+            "showSave": true,
+            "showActions": true,
+            "showSerial": true,
+            "showFooter": true,
+            "footer": {
+                "showAggregateRows": false,
+                "showTotals": false,
+                "createNewRow": true
+            },
+            "body": {
+                "showEdit": true,
+                "showDelete": true,
+                "showShow": false,
+                "deleteType": "icon",
+                "deleteIconSize": "xl"
+            }
+        }
+    },
+    "callbacks": {
+        "table": {
+            "onDelete1": "function",
+            "onReadFail": "function",
+            "body": {
+                "update": "function",
+                "show": "function",
+                "edit": "function"
+            },
+            "footer": {
+                "onSave": "function"
+            }
+        }
+    },
+    "endPoints": {
+        "create": "/api/v1/doctors/insertWithMeta",
+        "update": "/api/v1/doctors/modify",
+        "delete": "/api/v1/doctors/del",
+        "read": "/api/v1/doctors/showAll",
+        "read1": "/Api/V1/ItemsTable/ShowAll",
+        "find": "",
+        "filter": "",
+        "dataLists": {},
+        "dataListEndpoints": {}
+    },
+    "columnsConfig": [
+        {
+            "columnName": "doctorName",
+            "title": "Doctor Name",
+            "field": "doctorName",
+            "cellConfig": {
+                "width": "200px"
+            },
+            "dataListSource": "",
+            "tableFooterDataListShow": false,
+            "uiClasses": {
+                "form": {
+                    "rowClass": "flex items-center space-x-4"
+                }
+            },
+            "isVisible": true,
+            "allowOnChange": false,
+            "onChangeType": "",
+            "isConsider": true,
+            "tableConfig": {
+                "footerConfig": {
+                    "enterAsTab": true,
+                    "isNotEmpty": true
+                }
+            }
+        },
+        {
+            "columnName": "doctorMobile",
+            "field": "Doctor Mobile",
+            "title": "Doctor Mobile",
+            "isVisible": true,
+            "cellConfig": {
+                "width": "200px"
+            }
+        },
+        {
+            "columnName": "doctorSpeciality",
+            "field": "Speciality",
+            "title": "Speciality",
+            "isVisible": true,
+            "cellConfig": {
+                "width": "200px"
+            }
+        },
+        {
+            "field": "pk",
+            "title": "pk",
+            "primary": true,
+            "isVisible": false,
+            "cellConfig": {
+                "width": "50px"
+            }
+        }
+    ],
+    "columnsConfig1": [
+        {
+            "columnName": "doctorName",
+            "title": "Doctor Name",
+            "cellConfig": {
+                "width": "150px"
+            },
+            "isSearchable": false,
+            "dataListSource": ""
+        },
+        {
+            "columnName": "doctorMobile",
+            "title": "Doctor Mobile",
+            "cellConfig": {
+                "width": "100px"
+            },
+            "isSearchable": false,
+            "dataListSource": "AccountNames.AccountName"
+        },
+        {
+            "columnName": "doctorSpeciality",
+            "title": "Speciality",
+            "cellConfig": {
+                "width": "100px"
+            }
+        },
+        {
+            "field": "pk",
+            "title": "pk",
+            "primary": true
+        }
+    ],
+    "defaults": {
+        "data": []
+    }
+}
