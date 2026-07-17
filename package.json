@@ -9,7 +9,9 @@
     "node",
     "project-generator"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "dotenv": "^17.4.2"
+  },
   "type": "module",
   "exports": {
     ".": "./index.js"
