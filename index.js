@@ -20,4 +20,4 @@ const latestModule = await import(
     pathToFileURL(join(binDir, latestVersion.name, "index.js")).href
 );
 
-export default latestModule.default;
+export { latestModule };

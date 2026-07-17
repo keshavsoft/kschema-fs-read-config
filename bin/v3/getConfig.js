@@ -1,14 +1,24 @@
 import fs from "fs";
 import path from "path";
 
-const startFunc = ({ configPath }) => {
-    const schemaPath = configPath;
+function readAllJsonFilesSync(dirPath) {
+    try {
+        // Read directory content and filter out non-JSON extensions
+        return fs.readdirSync(dirPath)
+            .filter(file => path.extname(file).toLowerCase() === '.json')
+            .map(file => {
+                const fullPath = path.join(dirPath, file);
+                const rawContent = fs.readFileSync(fullPath, 'utf8');
 
-    if (!fs.existsSync(schemaPath)) return "{}";
+                return {
+                    fileName: file,
+                    content: JSON.parse(rawContent)
+                };
+            });
+    } catch (error) {
+        console.error('Error scanning folder sync:', error.message);
+        return [];
+    }
+}
 
-    const schema = JSON.parse(fs.readFileSync(schemaPath, "utf-8"));
-
-    return schema.columnsConfig;
-};
-
-export default startFunc;
+export default readAllJsonFilesSync;

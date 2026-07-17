@@ -1,6 +1,9 @@
-import path from "path";
-import load from "../../index.js";
+import { getAllFilesContent } from "../../index.js";
 
-load({
+const allJsonData = getAllFilesContent({
     rootPath: process.cwd()
+});
+
+allJsonData.forEach((schema) => {
+    console.log(schema.fileName, schema.content);
 });
