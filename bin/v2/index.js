@@ -1,18 +1,12 @@
-import { scoutTheRealmForTargetJsons } from "./adventure/scout.js";
-import { consultTheAncientScrolls } from "./adventure/oracle.js";
-import { transmuteGemsWithWisdom } from "./adventure/blacksmith.js";
+import dotenv from "dotenv";
+import path from "path";
 
-const startFunc = ({ toPath, configPath, inAction }) => {
-    switch (inAction) {
-        case "Crud":
-            const sacredWisdom = consultTheAncientScrolls({ scrollPath: configPath });
-            const hiddenGems = scoutTheRealmForTargetJsons(toPath);
-            transmuteGemsWithWisdom({ gems: hiddenGems, wisdom: sacredWisdom });
-            break;
-        default:
-            break;
-    }
-    return true;
+const startFunc = ({ rootPath }) => {
+    dotenv.config({
+        path: path.join(rootPath, ".env")
+    });
+
+    console.log(process.env.PORT);
 };
 
 export default startFunc;
