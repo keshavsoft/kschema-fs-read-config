@@ -1,6 +1,6 @@
 {
   "name": "kschema-fs-read-config",
-  "version": "1.4.4",
+  "version": "1.4.5",
   "description": "read the env file to arrive the location of schemas in config",
   "keywords": [
     "cli",
