@@ -39,4 +39,23 @@ const getPort = (rootPath) => {
     return process.env.PORT;
 };
 
-export { getAllFilesContent, getTableNames, getPort };
+const schemasPath = (rootPath) => {
+    dotenv.config({
+        path: path.join(rootPath, ".env")
+    });
+
+    return process.env.SchemaPath;
+};
+
+const dataPath = (rootPath) => {
+    dotenv.config({
+        path: path.join(rootPath, ".env")
+    });
+
+    return process.env.DataPath;
+};
+
+export {
+    getAllFilesContent, getTableNames, getPort,
+    schemasPath, dataPath
+};
