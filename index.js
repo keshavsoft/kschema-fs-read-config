@@ -45,6 +45,6 @@ if (!match || match[0] !== expectedExportLine) {
 
 export { latestModule };
 
-export const { dataPath, getAllFilesContent, getPort, getTableNames, schemasPath } = latestModule;
+export const { getAllFilesContent, getDataPath, getPort, getSchemasPath, getTableNames } = latestModule;
 
 

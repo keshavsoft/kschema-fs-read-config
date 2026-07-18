@@ -39,7 +39,7 @@ const getPort = (rootPath) => {
     return process.env.PORT;
 };
 
-const schemasPath = (rootPath) => {
+const getSchemasPath = (rootPath) => {
     dotenv.config({
         path: path.join(rootPath, ".env")
     });
@@ -47,7 +47,7 @@ const schemasPath = (rootPath) => {
     return process.env.SchemaPath;
 };
 
-const dataPath = (rootPath) => {
+const getDataPath = (rootPath) => {
     dotenv.config({
         path: path.join(rootPath, ".env")
     });
@@ -57,5 +57,5 @@ const dataPath = (rootPath) => {
 
 export {
     getAllFilesContent, getTableNames, getPort,
-    schemasPath, dataPath
+    getSchemasPath, getDataPath
 };
