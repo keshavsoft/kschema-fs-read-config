@@ -1,0 +1,65 @@
+{
+  "tableName": "tests",
+  "data": [],
+  "Vertical": [],
+  "DataTableOptions": {
+    "Header": {
+      "autoFocus": "LedgerName"
+    }
+  },
+  "NonSecured": {
+    "SubRoutes": [
+      "ShowAll",
+      "Insert",
+      "Pipe"
+    ]
+  },
+  "PrimarykeyTableNames": [],
+  "PrimarykeyTables": [],
+  "columnsConfig": [
+    {
+      "columnName": "testName",
+      "title": "test Name",
+      "field": "testName",
+      "cellConfig": {
+        "width": "200px"
+      },
+      "dataListSource": "",
+      "tableFooterDataListShow": false,
+      "uiClasses": {
+        "form": {
+          "rowClass": "flex items-center space-x-4"
+        }
+      },
+      "isVisible": true,
+      "allowOnChange": false,
+      "onChangeType": "",
+      "isConsider": true,
+      "tableConfig": {
+        "footerConfig": {
+          "enterAsTab": true,
+          "isNotEmpty": true
+        }
+      }
+    },
+    {
+      "columnName": "testRate",
+      "field": "test Rate",
+      "title": "test Rate",
+      "primary": true,
+      "isVisible": true,
+      "cellConfig": {
+        "width": "200px"
+      }
+    },
+    {
+      "field": "pk",
+      "title": "pk",
+      "primary": true,
+      "isVisible": false,
+      "cellConfig": {
+        "width": "50px"
+      }
+    }
+  ]
+}
