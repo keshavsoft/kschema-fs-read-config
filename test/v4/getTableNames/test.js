@@ -3,10 +3,12 @@ import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-import { getTableNames } from "../../../index.js";
+// import { getTableNames } from "../../../index.js";
 
-const allJsonData = getTableNames({
-    rootPath: __dirname
-});
+console.log(process.cwd());
 
-console.log(allJsonData);
+// const allJsonData = getTableNames({
+//     rootPath: __dirname
+// });
+
+// console.log(allJsonData);
