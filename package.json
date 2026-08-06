@@ -1,6 +1,6 @@
 {
   "name": "kschema-fs-read-config",
-  "version": "1.5.2",
+  "version": "1.6.1",
   "description": "read the env file to arrive the location of schemas in config",
   "keywords": [
     "cli",
@@ -10,7 +10,8 @@
     "project-generator"
   ],
   "dependencies": {
-    "dotenv": "^17.4.2"
+    "dotenv": "^17.4.2",
+    "node-fs-parent": "^1.10.3"
   },
   "scripts": {
     "sync": "node bin/core/syncExports.js",
