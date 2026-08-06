@@ -9,59 +9,37 @@ import getSchemasPathFunc from "./getSchemasPath.js";
 import getDataPathFunc from "./getDataPath.js";
 
 const loadEnv = (rootPath) => {
-    const targetPath = rootPath ? rootPath : process.cwd();
+    const targetPath = rootPath || process.cwd();
     const envPath = fsParent(".env", 10, targetPath);
+    const resolvedPath = envPath && envPath[0] ? envPath[0] : path.join(targetPath, ".env");
 
-    dotenv.config({ path: envPath[0] });
+    dotenv.config({ path: resolvedPath });
 
-    // const schemaPath = path.join(targetPath, process.env.SchemaPath);
-
-    return targetPath;
+    return path.dirname(resolvedPath);
 };
 
 const getAllFilesContent = (rootPath) => {
-    dotenv.config({
-        path: path.join(rootPath, ".env")
-    });
-
-    const schemaPath = path.join(rootPath, process.env.SchemaPath);
-    return getAllFilesContentFunc(schemaPath);
+    const targetPath = loadEnv(rootPath);
+    return getAllFilesContentFunc(path.join(targetPath, process.env.SchemaPath || ""));
 };
 
 const getTableNames = (rootPath) => {
-    const targetPath = rootPath ? rootPath : process.cwd();
-    const envPath = fsParent(".env", 10, targetPath);
-
-    dotenv.config({ path: envPath[0] });
-
-    const schemaPath = path.join(targetPath, process.env.SchemaPath);
-
-    return getTableNamesFunc(schemaPath);
+    const targetPath = loadEnv(rootPath);
+    return getTableNamesFunc(path.join(targetPath, process.env.SchemaPath || ""));
 };
 
 const getPort = (rootPath) => {
-    dotenv.config({
-        path: path.join(rootPath, ".env")
-    });
-
+    loadEnv(rootPath);
     return getPortFunc();
 };
 
 const getSchemasPath = (rootPath) => {
-    const targetPath = loadEnv(rootPath);
-
-    dotenv.config({
-        path: path.join(targetPath, ".env")
-    });
-
+    loadEnv(rootPath);
     return getSchemasPathFunc();
 };
 
 const getDataPath = (rootPath) => {
-    dotenv.config({
-        path: path.join(rootPath, ".env")
-    });
-
+    loadEnv(rootPath);
     return getDataPathFunc();
 };
 

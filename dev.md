@@ -1,48 +1,35 @@
 # Development Guide
 
-This document explains the internal architecture and development workflow of `@keshavsoft/kschema-api-gen-actions`.
+This document explains the internal architecture and development workflow of `@keshavsoft/kschema-fs-read-config`.
 
 ---
 
 # Introduction
 
-`@keshavsoft/kschema-api-gen-actions` is a modular CLI execution framework designed around scalable command orchestration and isolated runtime execution.
+`@keshavsoft/kschema-fs-read-config` is a version-isolated configurations loader library. Its main goal is to automatically locate environment variables and resolve configuration files on the local filesystem.
 
 The architecture focuses on:
 
-* dynamic command loading
-* version isolation
-* configuration-driven execution
-* reusable workflows
-* scalable action registration
-
-The goal is to allow new features to be added without rewriting the execution engine.
+* Version isolation (independent runtime environments)
+* Dynamic loading of the latest version at runtime
+* Auto-export synchronization for ESM named exports compliance
+* Robust parent folder resolution for environment files
 
 ---
 
-# High Level Architecture
-
-Execution pipeline:
+# High-Level Architecture
 
 ```text
-cli.js
+Consumer Application
     ↓
-loadRunner.js
+Imports kschema-fs-read-config (root index.js)
     ↓
-version runtime
+Resolves the highest version folder (e.g. bin/v6/index.js)
     ↓
-start.js
+Dynamically imports the highest version module
     ↓
-loadCommand.js
-    ↓
-actions.json
-    ↓
-dynamic import
-    ↓
-task execution
+Statically maps and exports functions to satisfy ESM named export requirements
 ```
-
-Each layer has a dedicated responsibility.
 
 ---
 
@@ -50,455 +37,59 @@ Each layer has a dedicated responsibility.
 
 ```text
 bin/
- ├── cli.js
- │
  ├── core/
- │    ├── getLatestVersion.js
- │    └── loadRunner.js
- │
- └── v18/
-      ├── config/
-      │    └── actions.json
-      │
-      ├── core/
-      │    ├── loadCommand.js
-      │    └── start.js
-      │
-      └── tasks/
-           └── actions/
-                ├── showAll.js
-                ├── insert.js
-                └── update.js
-
-index.js
-
+ │    └── syncExports.js      # Syncs root index.js ESM named exports to match version exports
+ ├── v5/
+ │    └── [Legacy version implementation]
+ └── v6/
+      ├── adventure/
+      │    └── scout.js       # Game-themed scouting / directory scanners
+      ├── getAllFilesContent.js
+      ├── getConfig.js
+      ├── getDataPath.js
+      ├── getPort.js
+      ├── getSchemasPath.js
+      ├── getTableNames.js
+      └── index.js            # Entry point for version 6 loading / env parsing
+index.js                      # Dynamically imports and statically exports latest version
 test/
- ├── showAll.js
- ├── insert.js
- └── update.js
+ └── v5/
+      └── getTableNames/
+           ├── .env
+           ├── Config/
+           └── test.js
 ```
 
 ---
 
-# Entry Layer
+# Dynamic Version Resolution & ESM Constraints
 
-## cli.js
+In modern JavaScript **ES Modules (ESM)**, named exports must be statically resolvable before code execution. Since our library dynamically determines and loads the highest runtime version at import time, we cannot simply use runtime-evaluated dynamic exports.
 
-Location:
+### The Solution: Auto-Export Synchronization
 
-```text
-bin/cli.js
-```
-
-Responsibilities:
-
-* detect latest runtime version
-* load runtime dynamically
-* execute startup flow
-
-Example:
-
-```js
-const version = getLatestVersion();
-
-const runner = await loadRunner(version);
-
-await runner();
-```
-
-The entry layer intentionally stays lightweight.
+1. **Static Declaration in `index.js`**:
+   The root `index.js` destructures and exports functions directly from the dynamically loaded `latestModule`:
+   ```javascript
+   export const { getAllFilesContent, getDataPath, getPort, getSchemasPath, getTableNames } = latestModule;
+   ```
+2. **Synchronization Script (`bin/core/syncExports.js`)**:
+   A standalone utility that compares the actual exports of the highest version entry point with the current static exports of the root `index.js`. If a mismatch is found, it automatically rewrites the root `index.js` to align them.
+3. **Automated Publish Workflows**:
+   The sync script runs automatically under the `prepublishOnly` npm script to ensure published npm builds are always 100% in sync and syntax-error free.
 
 ---
 
-# Runtime Loader
+# Adding a New Version (e.g. v7)
 
-## loadRunner.js
-
-Location:
-
-```text
-bin/core/loadRunner.js
-```
-
-Purpose:
-
-Load runtime dynamically based on version.
-
-Example:
-
-```js
-await import(`../${version}/start.js`);
-```
-
-Benefits:
-
-* version isolation
-* backward compatibility
-* safe runtime upgrades
-* independent evolution
+To release a new version layout:
+1. Create `bin/v7/index.js` and all associated helper files.
+2. Ensure you export the required functions.
+3. Run `npm run sync` to update the root `index.js` named exports automatically.
+4. Add verification tests under `test/v7`.
 
 ---
 
-# Runtime Engine
+# License
 
-## start.js
-
-Location:
-
-```text
-bin/v18/core/start.js
-```
-
-Responsibilities:
-
-* parse CLI arguments
-* validate command input
-* resolve executable action
-* execute workflow
-
-Execution flow:
-
-```text
-parse input
-    ↓
-load command
-    ↓
-load action
-    ↓
-execute action
-```
-
-This layer acts as orchestration middleware.
-
----
-
-# Configuration Layer
-
-## actions.json
-
-Location:
-
-```text
-bin/v18/config/actions.json
-```
-
-This file acts as command metadata registry.
-
-Example:
-
-```json
-{
-    "showAll": {
-        "file": "showAll.js"
-    }
-}
-```
-
-Meaning:
-
-```text
-showAll command
-    ↓
-maps to
-    ↓
-showAll.js
-```
-
-Benefits:
-
-* centralized command registration
-* scalable configuration
-* no hardcoded routing
-* cleaner architecture
-
----
-
-# Command Loader
-
-## loadCommand.js
-
-Location:
-
-```text
-bin/v18/core/loadCommand.js
-```
-
-Purpose:
-
-Convert command names into executable modules.
-
-Example flow:
-
-```text
-command name
-    ↓
-lookup actions.json
-    ↓
-resolve file
-    ↓
-dynamic import
-    ↓
-return executable module
-```
-
-Example:
-
-```js
-await import(`../tasks/actions/${file}`);
-```
-
-This creates a plugin-style execution system.
-
----
-
-# Task Layer
-
-Location:
-
-```text
-bin/v18/tasks/actions/
-```
-
-This layer contains actual business execution.
-
-Examples:
-
-```text
-showAll.js
-insert.js
-update.js
-```
-
-Each action is isolated.
-
-Benefits:
-
-* easier debugging
-* reusable workflows
-* cleaner scaling
-* safer refactoring
-
----
-
-# API Layer
-
-## index.js
-
-Location:
-
-```text
-index.js
-```
-
-Purpose:
-
-Expose programmable API access.
-
-Example:
-
-```js
-import api from "@keshavsoft/kschema-api-gen-actions";
-```
-
-This allows commands to be consumed programmatically outside CLI execution.
-
----
-
-# Test Architecture
-
-## test/
-
-Location:
-
-```text
-test/
-```
-
-The `test` folder is not simple unit testing.
-
-It acts as:
-
-* isolated runtime validation
-* local development harness
-* programmable action execution
-* architecture verification
-
-Example:
-
-```text
-test/showAll.js
-```
-
-Typical flow:
-
-```text
-test/showAll.js
-    ↓
-imports from index.js
-    ↓
-index.js loads runtime
-    ↓
-loadCommand.js resolves action
-    ↓
-actions.json maps metadata
-    ↓
-tasks/actions/showAll.js executes
-```
-
-This allows direct testing without npm publishing.
-
----
-
-# Example Test File
-
-```js
-import api from "../index.js";
-
-await api({
-    command: "showAll",
-    toPath: process.cwd()
-});
-```
-
-Run locally:
-
-```bash
-node test/showAll.js
-```
-
----
-
-# Dynamic Import Strategy
-
-Dynamic imports are a major architectural decision.
-
-Example:
-
-```js
-await import(path);
-```
-
-Benefits:
-
-* lazy loading
-* lower startup cost
-* plugin-style scalability
-* isolated execution
-* runtime flexibility
-
-Only required modules load during execution.
-
----
-
-# Version Isolation
-
-The architecture supports isolated runtimes.
-
-Example:
-
-```text
-v16/
-v17/
-v18/
-```
-
-Benefits:
-
-* safer upgrades
-* runtime stability
-* controlled migration
-* backward compatibility
-
-Each runtime behaves independently.
-
----
-
-# Scalability Model
-
-Adding a new command typically requires:
-
-1. Create action file
-2. Register in `actions.json`
-3. Create optional test file
-4. Execute locally
-
-Core engine remains unchanged.
-
-This is a strong scalability characteristic.
-
----
-
-# Architectural Strengths
-
-## Modular
-
-Every layer has isolated responsibility.
-
----
-
-## Extensible
-
-New commands integrate easily.
-
----
-
-## Config Driven
-
-Behavior is registry-based.
-
----
-
-## Runtime Safe
-
-Versions remain isolated.
-
----
-
-## Developer Friendly
-
-Test folder enables rapid local execution.
-
----
-
-# Philosophy
-
-```text
-Small focused modules scale better than large intelligent files.
-```
-
-The architecture prioritizes:
-
-* modularity
-* clarity
-* scalability
-* isolated execution
-* maintainable workflows
-
----
-
-# Future Direction
-
-Possible future evolution:
-
-* plugin ecosystem
-* generator marketplace
-* schema-driven workflows
-* runtime extensions
-* interactive CLI prompts
-* scaffolding presets
-
-The current structure already supports long-term growth.
-
----
-
-# Conclusion
-
-`@keshavsoft/kschema-api-gen-actions` demonstrates how a simple CLI utility can evolve into a scalable developer platform using:
-
-* layered architecture
-* dynamic runtime loading
-* configuration-driven execution
-* isolated task workflows
-* modular command orchestration
-
-The codebase is intentionally designed for maintainability, scalability, and controlled runtime evolution.
+MIT

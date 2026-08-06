@@ -1,25 +1,24 @@
-# kschema-fs-ui-alter-config
+# kschema-fs-read-config
 
-> Find JSON files in your UI directory structure and inject/alter their column configurations automatically.
+> Read the `.env` file to locate schemas and configurations across your projects.
 
-`kschema-fs-ui-alter-config` is a lightweight, configuration-driven utility designed to synchronize table column configurations (`columnsConfig`) from a master schema JSON to target UI configuration files (specifically matching `**/configs/showAll.json`).
+`kschema-fs-read-config` is a lightweight, configuration-driven utility designed to dynamically read environment configuration files, automatically resolve schema and data directory paths (supporting parent directory lookup), and parse configuration datasets.
 
 ---
 
 ## Features
 
-- 🔍 **Automated Discovery**: Recursively searches the workspace to locate `showAll.json` files within `configs/` folders.
-- ⚙️ **Config Ingestion**: Extracts column definitions from a master JSON configuration file.
-- ⚡ **Seamless Mutation**: Updates target JSON configuration files in-place with the retrieved column configuration.
-- 📦 **Version-Isolated Runtimes**: Employs a dynamic runner system that loads the latest runtime version (currently `v3`).
-- 📖 **Story-Driven Architecture**: The latest execution engine (`v3`) is structured as a clear narrative using concepts of a Scout, an Oracle, and a Blacksmith for self-documenting code.
+- 🔍 **Automated `.env` Discovery**: Recursively searches parent directories for a `.env` file using `node-fs-parent`.
+- ⚙️ **Config Ingestion**: Reads and parses all JSON files inside the configured `SchemaPath`.
+- 📦 **Version-Isolated Runtimes**: Employs a dynamic runner system that loads the latest runtime version (currently `v6`).
+- ⚡ **Consistent API**: Simple named exports to quickly access common configuration schemas, paths, and server ports.
 
 ---
 
 ## Installation
 
 ```bash
-npm install kschema-fs-ui-alter-config
+npm install kschema-fs-read-config
 ```
 
 ---
@@ -28,34 +27,42 @@ npm install kschema-fs-ui-alter-config
 
 ### Programmatic API
 
-Import the default function and invoke it with target options:
+Import the named helpers and invoke them:
 
 ```javascript
-import load from "kschema-fs-ui-alter-config";
-import path from "node:path";
+import { 
+    getAllFilesContent, 
+    getTableNames, 
+    getPort, 
+    getSchemasPath, 
+    getDataPath 
+} from "kschema-fs-read-config";
 
-load({
-    // The directory tree containing UI json configurations to alter
-    toPath: path.join(process.cwd(), "ui", "doctors"),
-    
-    // Path to the master JSON configuration schema containing the columnsConfig
-    configPath: path.join(process.cwd(), "Config", "Schemas", "doctors.json"),
-    
-    // The action to perform (currently supports "Crud")
-    inAction: "Crud"
-});
+// Read and parse all JSON files inside the resolved SchemaPath
+const filesContent = getAllFilesContent();
+console.log(filesContent);
+
+// Retrieve all table names mapped to their filenames
+const tableNames = getTableNames();
+console.log(tableNames); // e.g., [{ name: "doctors.json", tableName: "doctors" }]
+
+// Retrieve specific config values from the loaded .env
+const port = getPort();
+const schemaPath = getSchemasPath();
+const dataPath = getDataPath();
 ```
 
 ---
 
-## Architecture & Code Story (v3)
+## Environment Variables
 
-In version 3, the codebase behaves like an adventure quest rather than standard dry modules:
+Ensure your `.env` contains the required keys:
 
-1. **The Scout** (`scout.js`): Recursively searches the specified realm (`toPath`) to locate target gems (`showAll.json` under `configs/` subdirectories).
-2. **The Oracle** (`oracle.js`): Consults the ancient scrolls (`configPath`) to fetch the master `columnsConfig`.
-3. **The Blacksmith** (`blacksmith.js`): Transmutes/forges the target files in-place by infusing them with the columns configuration.
-4. **The Chronicle** (`index.js`): Directs the journey, orchestrating the steps from scouting to transmuting.
+```ini
+SchemaPath=Config/Schemas
+DataPath=Data
+PORT=9012
+```
 
 ---
 
@@ -63,15 +70,14 @@ In version 3, the codebase behaves like an adventure quest rather than standard 
 
 Clone the repository:
 ```bash
-git clone https://github.com/keshavsoft/kschema-fs-ui-alter-config.git
-cd kschema-fs-ui-alter-config
+git clone https://github.com/keshavsoft/kschema-fs-read-config.git
+cd kschema-fs-read-config
 npm install
 ```
 
 To run the local validation tests:
 ```bash
-cd test/v3
-node test.js
+node test/v5/getTableNames/test.js
 ```
 
 ---
