@@ -49,10 +49,31 @@ if (isLocalVersionGreater(localVersion, publishedVersion)) {
     try {
         execSync("npm publish", { stdio: "inherit" });
         console.log("Successfully published to npm!");
+        if (process.env.GITHUB_OUTPUT) {
+            fs.appendFileSync(process.env.GITHUB_OUTPUT, "published=true\n");
+        }
+        if (process.env.GITHUB_STEP_SUMMARY) {
+            fs.appendFileSync(
+                process.env.GITHUB_STEP_SUMMARY,
+                `### ✅ Successfully Published\n- **Package:** \`${packageName}\`\n- **Version:** \`${localVersion}\`\n`
+            );
+        }
     } catch (publishError) {
+        if (process.env.GITHUB_STEP_SUMMARY) {
+            fs.appendFileSync(
+                process.env.GITHUB_STEP_SUMMARY,
+                `### ❌ Publish Failed\n- **Package:** \`${packageName}\`\n- **Version:** \`${localVersion}\`\n- **Error:** ${publishError.message}\n`
+            );
+        }
         console.error("Failed to publish:", publishError.message);
         process.exit(1);
     }
 } else {
     console.log(`[SKIPPED] Local version ${localVersion} is not newer than published version ${publishedVersion}.`);
+    if (process.env.GITHUB_STEP_SUMMARY) {
+        fs.appendFileSync(
+            process.env.GITHUB_STEP_SUMMARY,
+            `### ⚠️ Publish Skipped\n- **Package:** \`${packageName}\`\n- **Version:** \`${localVersion}\` (npm version: \`${publishedVersion}\`)\n`
+        );
+    }
 }

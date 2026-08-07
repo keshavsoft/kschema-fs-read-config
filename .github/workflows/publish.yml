@@ -31,6 +31,8 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    outputs:
+      published: ${{ steps.publish_step.outputs.published }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -71,12 +73,14 @@ jobs:
           git push origin HEAD:${{ github.ref_name }} --follow-tags
 
       - name: Publish to npm
+        id: publish_step
         run: node npmPublish.js
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   notify:
     needs: publish
+    if: needs.publish.outputs.published == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
